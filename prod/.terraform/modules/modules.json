@@ -1,1 +1,0 @@
-{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"key_vault","Source":"./module/key","Dir":"module/key"},{"Key":"storage","Source":"./module/storage","Dir":"module/storage"},{"Key":"virtual_machine","Source":"./module/cresource","Dir":"module/cresource"}]}

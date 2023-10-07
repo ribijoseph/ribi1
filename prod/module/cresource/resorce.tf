@@ -4,12 +4,12 @@ resource "azurerm_resource_group" "rg_run" {
   tags     = var.tags
 }
 
-data "azurerm_key_vault" "key" {
-  name                = var.kv_name
-  resource_group_name = var.kv_rg_id
+/* data "azurerm_key_vault" "keyd" {
+  name                = "rg-reef-prod"
+  resource_group_name =  "rg-reef-prod-key"
 
 
-}
+} */
 
 /*data "azurerm_key_vault_secret" "vm_secret" {
   name         = "localname"
@@ -17,14 +17,17 @@ data "azurerm_key_vault" "key" {
 
 }*/
 resource "azurerm_windows_virtual_machine" "resource" {
-  for_each              = toset(var.vm_hostname.resource)
-  name                  = each.key
-  admin_username        = "ribi"
-  admin_password        = "Rhhhhio1@"
-  resource_group_name   = azurerm_resource_group.rg_run.name
-  location              = var.location
-  size                  = var.resource_vars.size
- 
+  for_each            = toset(var.vm_hostname.resource)
+  name                = each.key
+  admin_username      = "ribi"
+  admin_password      = "Rhhhhio1@"
+  resource_group_name = azurerm_resource_group.rg_run.name
+  location            = var.location
+  size                = var.resource_vars.size
+  network_interface_ids = [
+    azurerm_network_interface.example.id
+  ]
+
 
 
   os_disk {
@@ -43,5 +46,15 @@ resource "azurerm_windows_virtual_machine" "resource" {
 
 }
 
+resource "azurerm_network_interface" "example" {
+  name                = "example-nic"
+  location            = "centralindia"
+  resource_group_name = "NetworkWatcherRG"
 
+  ip_configuration {
+    name                          = "internal"
+    
+    private_ip_address_allocation = "Dynamic"
+  }
+}
 
